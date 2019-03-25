@@ -3,15 +3,12 @@
 import json
 from nltk import RegexpTokenizer
 """
-Created on Mon Mar  4 18:10:50 2019
-
-@author: Danny
+Helper functions
 """
 
 def get_url():
     '''Parse json_data and return a dictonary'''
-    #file = '/Users/Danny/Desktop/cs121hw3/WEBPAGES_RAW/bookkeeping.json' #mac
-    file =  r'C:\Users\Danny\Desktop\cs121hw3\WEBPAGES_RAW\bookkeeping.json'
+    file = '/Users/Danny/Desktop/hw/cs121hw3/WEBPAGES_RAW/bookkeeping.json'
     with open(file, 'r') as f:
         json_data = json.load(f)
     return json_data

@@ -3,10 +3,12 @@ from bs4 import BeautifulSoup
 from collections import defaultdict
 from math import log
 import os 
+import pickle
+#helper functions
 from helper import get_url
 from helper import tokenize
 from helper import inverseDocID
-import pickle
+
 
 """
 Created on Sat Mar  2 11:32:30 2019
@@ -15,7 +17,7 @@ Created on Sat Mar  2 11:32:30 2019
 """
 
 class Index:
-    
+    ''' Creates the index.'''
     def __init__(self, path):
         self.path = path
         self.numOfPages = 0
@@ -28,7 +30,7 @@ class Index:
             numInDoc = len(values)
             idf = log(self.numOfPages/numInDoc)
             for i in range(numInDoc):
-                self.index[key][i][0] = values[i][0] * idf
+                self.index[key][i][0] = values[i][0] * idf # multiplies idf by tf and stores it
             
     def create_index(self):
         '''Loops through all Urls in all subdirectories and uses other functions
@@ -45,7 +47,7 @@ class Index:
     def open_file(self, path):
         '''Opens the file and passes it to the parser.'''
         try:
-            # print(path)
+            print(path)
             p = path.split('/')
             folder, file = int(p[-2]), int(p[-1])
             docID = (500 * folder) + file #docID modulo 500 gets id num. integer division by 500 gets file
@@ -58,10 +60,10 @@ class Index:
         ''' '''
         try:
             soup = BeautifulSoup(file, 'html.parser')
-            text = soup.get_text()
+            text = soup.get_text() # gets all text on the webpage
             
-            folder, file = inverseDocID(docID) ## ADds the title to the text ( weight it later )
-            text = text + '\n' + self.json_data[folder+'/'+file]
+            folder, file = inverseDocID(docID) ## Adds the title to the text ( weight it later )
+            text = text + '\n' + self.json_data[folder+'/'+file] ## add url to the text
     
             token = tokenize(text, docID)
             freq_dict = self.add_frequency(token, docID) #gives that one pages index back
